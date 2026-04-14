@@ -20,7 +20,7 @@ class Events_Grid_Shortcode {
 	 * @return void
 	 */
 	public static function init() {
-		add_shortcode( 'dextra_events', array( __CLASS__, 'render_shortcode' ) );
+		add_shortcode( 'events_grid', array( __CLASS__, 'render_shortcode' ) );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class Events_Grid_Shortcode {
 				'order'          => 'ASC',
 			),
 			$atts,
-			'dextra_events'
+			'events_grid'
 		);
 
 		wp_enqueue_style( 'events-grid' );

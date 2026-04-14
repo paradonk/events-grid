@@ -109,7 +109,7 @@ class Events_Grid_Help {
 		<div class="wrap deg-guide-wrap">
 			<h1><?php esc_html_e( 'Events Grid — Shortcode Guide', 'events-grid' ); ?></h1>
 			<p><?php esc_html_e( 'Place this shortcode in any page, post, or Elementor shortcode widget to display your events.', 'events-grid' ); ?></p>
-			<div class="deg-shortcode-badge">[dextra_events]</div>
+			<div class="deg-shortcode-badge">[events_grid]</div>
 
 			<?php /* ── ATTRIBUTES TABLE ── */ ?>
 			<h2><?php esc_html_e( 'All Attributes', 'events-grid' ); ?></h2>
@@ -212,34 +212,34 @@ class Events_Grid_Help {
 			<h2><?php esc_html_e( 'Examples', 'events-grid' ); ?></h2>
 
 			<p class="deg-example-label"><?php esc_html_e( 'Upcoming events only (default)', 'events-grid' ); ?></p>
-			<div class="deg-example-block">[dextra_events]</div>
+			<div class="deg-example-block">[events_grid]</div>
 
 			<p class="deg-example-label"><?php esc_html_e( 'Past events only', 'events-grid' ); ?></p>
-			<div class="deg-example-block">[dextra_events <span class="attr">show_past</span>="<span class="val">only</span>"]</div>
+			<div class="deg-example-block">[events_grid <span class="attr">show_past</span>="<span class="val">only</span>"]</div>
 
 			<p class="deg-example-label"><?php esc_html_e( 'Upcoming + past on a new row', 'events-grid' ); ?></p>
-			<div class="deg-example-block">[dextra_events <span class="attr">show_past</span>="<span class="val">yes</span>"]</div>
+			<div class="deg-example-block">[events_grid <span class="attr">show_past</span>="<span class="val">yes</span>"]</div>
 
 			<p class="deg-example-label"><?php esc_html_e( 'Upcoming + past in one single grid (no separator row)', 'events-grid' ); ?></p>
-			<div class="deg-example-block">[dextra_events <span class="attr">show_past</span>="<span class="val">merged</span>"]</div>
+			<div class="deg-example-block">[events_grid <span class="attr">show_past</span>="<span class="val">merged</span>"]</div>
 
 			<p class="deg-example-label"><?php esc_html_e( 'Upcoming first, then most-recent past — automatic ordering', 'events-grid' ); ?></p>
-			<div class="deg-example-block">[dextra_events <span class="attr">orderby</span>="<span class="val">upcoming_first</span>"]</div>
+			<div class="deg-example-block">[events_grid <span class="attr">orderby</span>="<span class="val">upcoming_first</span>"]</div>
 
 			<p class="deg-example-label"><?php esc_html_e( 'Latest events first (newest → oldest)', 'events-grid' ); ?></p>
-			<div class="deg-example-block">[dextra_events <span class="attr">show_past</span>="<span class="val">yes</span>" <span class="attr">order</span>="<span class="val">DESC</span>"]</div>
+			<div class="deg-example-block">[events_grid <span class="attr">show_past</span>="<span class="val">yes</span>" <span class="attr">order</span>="<span class="val">DESC</span>"]</div>
 
 			<p class="deg-example-label"><?php esc_html_e( 'Alphabetical, upcoming only', 'events-grid' ); ?></p>
-			<div class="deg-example-block">[dextra_events <span class="attr">orderby</span>="<span class="val">title</span>" <span class="attr">order</span>="<span class="val">ASC</span>"]</div>
+			<div class="deg-example-block">[events_grid <span class="attr">orderby</span>="<span class="val">title</span>" <span class="attr">order</span>="<span class="val">ASC</span>"]</div>
 
 			<p class="deg-example-label"><?php esc_html_e( 'Custom grid layout', 'events-grid' ); ?></p>
-			<div class="deg-example-block">[dextra_events <span class="attr">columns</span>="<span class="val">4</span>" <span class="attr">tablet_columns</span>="<span class="val">2</span>" <span class="attr">mobile_columns</span>="<span class="val">1</span>"]</div>
+			<div class="deg-example-block">[events_grid <span class="attr">columns</span>="<span class="val">4</span>" <span class="attr">tablet_columns</span>="<span class="val">2</span>" <span class="attr">mobile_columns</span>="<span class="val">1</span>"]</div>
 
 			<p class="deg-example-label"><?php esc_html_e( 'Limit how many events appear', 'events-grid' ); ?></p>
-			<div class="deg-example-block">[dextra_events <span class="attr">posts_per_page</span>="<span class="val">6</span>"]</div>
+			<div class="deg-example-block">[events_grid <span class="attr">posts_per_page</span>="<span class="val">6</span>"]</div>
 
 			<p class="deg-example-label"><?php esc_html_e( 'Full example — all options combined', 'events-grid' ); ?></p>
-			<div class="deg-example-block">[dextra_events <span class="attr">show_past</span>="<span class="val">yes</span>" <span class="attr">orderby</span>="<span class="val">start_date</span>" <span class="attr">order</span>="<span class="val">ASC</span>" <span class="attr">posts_per_page</span>="<span class="val">12</span>" <span class="attr">columns</span>="<span class="val">3</span>" <span class="attr">tablet_columns</span>="<span class="val">2</span>" <span class="attr">mobile_columns</span>="<span class="val">1</span>"]</div>
+			<div class="deg-example-block">[events_grid <span class="attr">show_past</span>="<span class="val">yes</span>" <span class="attr">orderby</span>="<span class="val">start_date</span>" <span class="attr">order</span>="<span class="val">ASC</span>" <span class="attr">posts_per_page</span>="<span class="val">12</span>" <span class="attr">columns</span>="<span class="val">3</span>" <span class="attr">tablet_columns</span>="<span class="val">2</span>" <span class="attr">mobile_columns</span>="<span class="val">1</span>"]</div>
 
 			<?php /* ── TIPS ── */ ?>
 			<h2><?php esc_html_e( 'Tips', 'events-grid' ); ?></h2>

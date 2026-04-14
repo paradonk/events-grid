@@ -26,16 +26,16 @@ Features:
 1. Upload the plugin folder to `/wp-content/plugins/`.
 2. Activate the plugin in WordPress admin.
 3. Add events under the new `Events` menu.
-4. Place `[dextra_events]` in a page, post, or Elementor shortcode widget.
+4. Place `[events_grid]` in a page, post, or Elementor shortcode widget.
 
 == Shortcode ==
 
-`[dextra_events]`
+`[events_grid]`
 
 Examples:
-- `[dextra_events]`
-- `[dextra_events columns="4" tablet_columns="2" mobile_columns="1"]`
-- `[dextra_events posts_per_page="6" show_past="yes"]`
+- `[events_grid]`
+- `[events_grid columns="4" tablet_columns="2" mobile_columns="1"]`
+- `[events_grid posts_per_page="6" show_past="yes"]`
 
 == Changelog ==
 
