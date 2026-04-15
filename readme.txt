@@ -1,5 +1,5 @@
 === Events Grid ===
-Contributors: paradorn
+Contributors: OpenAI
 Tags: events, elementor, shortcode, grid
 Requires at least: 6.0
 Tested up to: 6.9.4
