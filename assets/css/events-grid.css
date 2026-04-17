@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;600;700&display=swap'); 
+/* Google Fonts is now loaded via wp_register_style() in PHP — no @import needed. */
+
+/* ── Grid layout ───────────────────────────────────────────────── */
 
 .deg-events-grid {
   display: grid;
@@ -8,6 +10,22 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+/* ── Section headings (shown when upcoming_label / past_label are set) ── */
+
+.deg-section-heading {
+  max-width: 1200px;
+  margin: 0 auto 16px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1d2327;
+}
+
+.deg-section-heading--past {
+  margin-top: 40px;
+}
+
+/* ── Event card ────────────────────────────────────────────────── */
 
 .deg-event-card {
   display: flex;
@@ -26,6 +44,8 @@
   transform: translateY(-4px);
   box-shadow: 0 14px 20px rgba(0, 0, 0, 0.20);
 }
+
+/* ── Card image ────────────────────────────────────────────────── */
 
 .deg-event-card__image-wrap {
   aspect-ratio: 16 / 9;
@@ -65,46 +85,52 @@
   display: block;
 }
 
-.deg-event-card__content {
+/* ── Card content
+     Use .deg-events-grid as a parent for specificity instead of !important.
+     This beats most theme element selectors (0,2,0 vs typical 0,0,1).   ── */
+
+.deg-events-grid .deg-event-card__content {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   padding: 14px 16px;
-  font-family: 'Roboto', sans-serif !important;
+  font-family: 'Roboto', sans-serif;
   font-weight: 300;
 }
 
-.deg-event-card__meta {
-  margin: 0 0 2px !important;
+.deg-events-grid .deg-event-card__meta {
+  margin: 0 0 2px;
   color: #5d6570;
   font-size: 13px;
   line-height: 1.4;
 }
 
-.deg-event-card__date {
-  font-size: 14px !important;
+.deg-events-grid .deg-event-card__date {
+  font-size: 14px;
   font-weight: bold;
-  color: #000000 !important;
+  color: #000000;
 }
 
-.deg-event-card__title {
-  margin: 5px 0 5px !important;
-  font-family: 'Roboto', sans-serif !important;
-  text-transform: uppercase !important;
-  font-size: 14px !important;
-  font-weight: normal !important;
-  color: #5d6570 !important;
+.deg-events-grid .deg-event-card__title {
+  margin: 5px 0 5px;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: normal;
+  color: #5d6570;
   line-height: 1.4;
 }
 
-.deg-event-card__speaker-topic {
+.deg-events-grid .deg-event-card__speaker-topic {
   margin: 0 0 10px;
   color: #0048b6;
-  font-size: 13px !important;
-  font-weight: normal !important;
+  font-size: 13px;
+  font-weight: normal;
   overflow-wrap: break-word;
   word-break: break-word;
 }
+
+/* ── Card footer ───────────────────────────────────────────────── */
 
 .deg-event-card__footer {
   display: flex;
@@ -134,6 +160,8 @@
   text-decoration: underline;
 }
 
+/* ── Badges ────────────────────────────────────────────────────── */
+
 .deg-badge {
   display: inline-flex;
   align-items: center;
@@ -153,6 +181,7 @@
   color: #ffffff;
 }
 
+/* ── Past section separator ────────────────────────────────────── */
 
 .deg-events-grid--past {
   margin-top: 40px;
@@ -160,10 +189,22 @@
   border-top: 1px solid #e7e7e7;
 }
 
+/* When a past_label heading is shown, remove the duplicate top spacing
+   from the grid itself so the heading provides the visual separation. */
+.deg-section-heading--past + .deg-events-grid--past {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* ── Empty state ───────────────────────────────────────────────── */
+
 .deg-no-events {
   margin: 0;
   grid-column: 1 / -1;
 }
+
+/* ── Responsive ────────────────────────────────────────────────── */
 
 @media (max-width: 1024px) {
   .deg-events-grid {
@@ -176,7 +217,7 @@
     grid-template-columns: repeat(var(--deg-mobile-columns, 1), minmax(0, 1fr));
   }
 
-  .deg-event-card__title {
+  .deg-events-grid .deg-event-card__title {
     font-size: 13px;
   }
 }

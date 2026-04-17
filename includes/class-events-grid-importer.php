@@ -14,6 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Events_Grid_Importer {
 
+	/** Maximum CSV file size accepted (5 MB). */
+	const MAX_FILE_SIZE = 5242880;
+
+	/** Maximum number of data rows processed per upload. */
+	const MAX_ROWS = 2000;
+
 	/**
 	 * Hook setup.
 	 *
@@ -127,9 +133,23 @@ class Events_Grid_Importer {
 
 		$file = $_FILES['deg_csv_file'];
 
-		// Validate mime type.
-		$file_type = wp_check_filetype( $file['name'], array( 'csv' => 'text/csv' ) );
-		if ( empty( $file_type['ext'] ) ) {
+		// File size check — reject uploads larger than MAX_FILE_SIZE.
+		if ( $file['size'] > self::MAX_FILE_SIZE ) {
+			wp_safe_redirect( add_query_arg( 'deg_import_error', rawurlencode( __( 'File too large. Maximum size is 5 MB.', 'events-grid' ) ), $redirect_base ) );
+			exit;
+		}
+
+		// Validate file extension.
+		$file_ext = strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) );
+		if ( 'csv' !== $file_ext ) {
+			wp_safe_redirect( add_query_arg( 'deg_import_error', rawurlencode( __( 'Invalid file type. Please upload a .csv file.', 'events-grid' ) ), $redirect_base ) );
+			exit;
+		}
+
+		// Validate actual file content using finfo/mime_content_type when available.
+		// This catches renamed binaries or executables disguised as .csv files.
+		$real_mime = self::get_file_mime( $file['tmp_name'] );
+		if ( $real_mime && 0 !== strpos( $real_mime, 'text/' ) ) {
 			wp_safe_redirect( add_query_arg( 'deg_import_error', rawurlencode( __( 'Invalid file type. Please upload a .csv file.', 'events-grid' ) ), $redirect_base ) );
 			exit;
 		}
@@ -141,14 +161,30 @@ class Events_Grid_Importer {
 			exit;
 		}
 
-		$header   = null;
-		$imported = 0;
-		$skipped  = 0;
+		$header    = null;
+		$imported  = 0;
+		$skipped   = 0;
+		$row_count = 0;
+
+		// Pre-load all existing (title, start_date) pairs in one query so
+		// duplicate detection is O(1) instead of one WP_Query per row.
+		$existing_keys = self::get_existing_event_keys();
+
+		// Suspend object-cache invalidation for the duration of the import so
+		// each wp_insert_post / update_post_meta call does not thrash the cache.
+		// A single flush at the end brings the cache back in sync.
+		wp_suspend_cache_invalidation( true );
 
 		while ( ( $row = fgetcsv( $handle ) ) !== false ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition
 			if ( null === $header ) {
 				$header = array_map( 'trim', $row );
 				$header = array_map( 'strtolower', $header );
+				continue;
+			}
+
+			// Hard cap: skip any rows beyond MAX_ROWS.
+			if ( $row_count >= self::MAX_ROWS ) {
+				$skipped++;
 				continue;
 			}
 
@@ -167,7 +203,8 @@ class Events_Grid_Importer {
 
 			$start_date_check = self::parse_csv_date( isset( $data['start_date'] ) ? $data['start_date'] : '' );
 
-			if ( self::event_exists( $title, $start_date_check ) ) {
+			// O(1) duplicate check against the pre-loaded set.
+			if ( isset( $existing_keys[ $title . '|' . $start_date_check ] ) ) {
 				$skipped++;
 				continue;
 			}
@@ -195,8 +232,14 @@ class Events_Grid_Importer {
 			update_post_meta( $post_id, '_deg_speaker_topic', sanitize_text_field( isset( $data['speaker_topic'] ) ? $data['speaker_topic'] : '' ) );
 			update_post_meta( $post_id, '_deg_external_url', esc_url_raw( isset( $data['external_url'] ) ? $data['external_url'] : '' ) );
 
+			// Mark as existing so duplicate rows within the same CSV are also caught.
+			$existing_keys[ $title . '|' . $start_date_check ] = true;
+			$row_count++;
 			$imported++;
 		}
+
+		wp_suspend_cache_invalidation( false );
+		wp_cache_flush();
 
 		fclose( $handle ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fclose
 
@@ -210,6 +253,30 @@ class Events_Grid_Importer {
 			)
 		);
 		exit;
+	}
+
+	/**
+	 * Detect the MIME type of a file using finfo or mime_content_type.
+	 *
+	 * Returns an empty string when neither extension is available so callers
+	 * can decide to skip verification rather than block a legitimate upload.
+	 *
+	 * @param string $path Absolute path to the file.
+	 * @return string Detected MIME type, or '' if detection is not available.
+	 */
+	private static function get_file_mime( $path ) {
+		if ( function_exists( 'finfo_open' ) ) {
+			$finfo = finfo_open( FILEINFO_MIME_TYPE );
+			$mime  = (string) finfo_file( $finfo, $path );
+			finfo_close( $finfo );
+			return $mime;
+		}
+
+		if ( function_exists( 'mime_content_type' ) ) {
+			return (string) mime_content_type( $path );
+		}
+
+		return '';
 	}
 
 	/**
@@ -251,31 +318,35 @@ class Events_Grid_Importer {
 	}
 
 	/**
-	 * Check if an event with the same title and start date already exists.
+	 * Fetch all existing event (title, start_date) pairs in a single query.
 	 *
-	 * @param string $title      Event title.
-	 * @param string $start_date Start date in Y-m-d.
-	 * @return bool
+	 * Returns a hash set keyed by "{title}|{start_date}" so callers can do
+	 * O(1) duplicate checks instead of running a WP_Query per CSV row.
+	 *
+	 * @return array<string,true>
 	 */
-	private static function event_exists( $title, $start_date ) {
-		$query = new WP_Query(
-			array(
-				'post_type'      => 'event',
-				'post_status'    => 'any',
-				'posts_per_page' => 1,
-				'title'          => $title,
-				'meta_query'     => array(
-					array(
-						'key'   => '_deg_start_date',
-						'value' => $start_date,
-					),
-				),
-				'fields'         => 'ids',
-				'no_found_rows'  => true,
-			)
+	private static function get_existing_event_keys() {
+		global $wpdb;
+
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT p.post_title, pm.meta_value AS start_date
+				 FROM {$wpdb->posts} p
+				 INNER JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID AND pm.meta_key = %s
+				 WHERE p.post_type = %s
+				   AND p.post_status != 'trash'",
+				'_deg_start_date',
+				'event'
+			),
+			ARRAY_A
 		);
 
-		return $query->have_posts();
+		$keys = array();
+		foreach ( $rows as $row ) {
+			$keys[ $row['post_title'] . '|' . $row['start_date'] ] = true;
+		}
+
+		return $keys;
 	}
 
 	/**

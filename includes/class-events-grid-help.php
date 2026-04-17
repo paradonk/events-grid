@@ -177,7 +177,7 @@ class Events_Grid_Help {
 					<tr>
 						<td><code>posts_per_page</code></td>
 						<td><?php esc_html_e( 'Any whole number ≥ 1', 'events-grid' ); ?></td>
-						<td><span class="deg-default"><code>12</code></span></td>
+						<td><span class="deg-default"><code>24</code></span></td>
 						<td><?php esc_html_e( 'Maximum number of events to display. When show_past="yes", this limit applies to each section independently.', 'events-grid' ); ?></td>
 					</tr>
 
@@ -203,6 +203,30 @@ class Events_Grid_Help {
 						<td>1 – 2</td>
 						<td><span class="deg-default"><code>1</code></span></td>
 						<td><?php esc_html_e( 'Number of columns on mobile screens (≤ 767 px).', 'events-grid' ); ?></td>
+					</tr>
+
+					<?php /* category */ ?>
+					<tr>
+						<td><code>category</code></td>
+						<td><?php esc_html_e( 'Category slug(s), comma-separated', 'events-grid' ); ?></td>
+						<td><span class="deg-default"><code><?php esc_html_e( '(all)', 'events-grid' ); ?></code></span></td>
+						<td><?php esc_html_e( 'Filter events by one or more Event Category slugs. Separate multiple slugs with commas.', 'events-grid' ); ?></td>
+					</tr>
+
+					<?php /* upcoming_label */ ?>
+					<tr>
+						<td><code>upcoming_label</code></td>
+						<td><?php esc_html_e( 'Any text', 'events-grid' ); ?></td>
+						<td><span class="deg-default"><code><?php esc_html_e( '(none)', 'events-grid' ); ?></code></span></td>
+						<td><?php esc_html_e( 'Heading shown above the upcoming events grid when show_past="yes". Leave empty to show no heading.', 'events-grid' ); ?></td>
+					</tr>
+
+					<?php /* past_label */ ?>
+					<tr>
+						<td><code>past_label</code></td>
+						<td><?php esc_html_e( 'Any text', 'events-grid' ); ?></td>
+						<td><span class="deg-default"><code><?php esc_html_e( '(none)', 'events-grid' ); ?></code></span></td>
+						<td><?php esc_html_e( 'Heading shown above the past events grid when show_past="yes". Leave empty to show no heading.', 'events-grid' ); ?></td>
 					</tr>
 
 				</tbody>
@@ -238,8 +262,17 @@ class Events_Grid_Help {
 			<p class="deg-example-label"><?php esc_html_e( 'Limit how many events appear', 'events-grid' ); ?></p>
 			<div class="deg-example-block">[events_grid <span class="attr">posts_per_page</span>="<span class="val">6</span>"]</div>
 
+			<p class="deg-example-label"><?php esc_html_e( 'Filter by category slug', 'events-grid' ); ?></p>
+			<div class="deg-example-block">[events_grid <span class="attr">category</span>="<span class="val">trade-show</span>"]</div>
+
+			<p class="deg-example-label"><?php esc_html_e( 'Filter by multiple categories', 'events-grid' ); ?></p>
+			<div class="deg-example-block">[events_grid <span class="attr">category</span>="<span class="val">trade-show,conference</span>"]</div>
+
+			<p class="deg-example-label"><?php esc_html_e( 'Upcoming + past with section headings', 'events-grid' ); ?></p>
+			<div class="deg-example-block">[events_grid <span class="attr">show_past</span>="<span class="val">yes</span>" <span class="attr">upcoming_label</span>="<span class="val">Upcoming Events</span>" <span class="attr">past_label</span>="<span class="val">Past Events</span>"]</div>
+
 			<p class="deg-example-label"><?php esc_html_e( 'Full example — all options combined', 'events-grid' ); ?></p>
-			<div class="deg-example-block">[events_grid <span class="attr">show_past</span>="<span class="val">yes</span>" <span class="attr">orderby</span>="<span class="val">start_date</span>" <span class="attr">order</span>="<span class="val">ASC</span>" <span class="attr">posts_per_page</span>="<span class="val">12</span>" <span class="attr">columns</span>="<span class="val">3</span>" <span class="attr">tablet_columns</span>="<span class="val">2</span>" <span class="attr">mobile_columns</span>="<span class="val">1</span>"]</div>
+			<div class="deg-example-block">[events_grid <span class="attr">show_past</span>="<span class="val">yes</span>" <span class="attr">orderby</span>="<span class="val">start_date</span>" <span class="attr">order</span>="<span class="val">ASC</span>" <span class="attr">posts_per_page</span>="<span class="val">12</span>" <span class="attr">columns</span>="<span class="val">3</span>" <span class="attr">tablet_columns</span>="<span class="val">2</span>" <span class="attr">mobile_columns</span>="<span class="val">1</span>" <span class="attr">category</span>="<span class="val">trade-show</span>" <span class="attr">upcoming_label</span>="<span class="val">Upcoming Events</span>" <span class="attr">past_label</span>="<span class="val">Past Events</span>"]</div>
 
 			<?php /* ── TIPS ── */ ?>
 			<h2><?php esc_html_e( 'Tips', 'events-grid' ); ?></h2>
