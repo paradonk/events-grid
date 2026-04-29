@@ -42,6 +42,7 @@ Examples:
 = 1.2.1 =
 * Fix: Shortcode cache key now includes the current date so past events are correctly excluded from the upcoming section after midnight without requiring a manual content save.
 
+
 = 1.2.0 =
 * Security: CSV upload now validates actual file content (finfo/mime_content_type), not just the file extension.
 * Security: Added 5 MB file size limit on CSV imports.
