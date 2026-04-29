@@ -1,0 +1,19 @@
+{
+    "name": "Events Grid",
+    "slug": "events-grid",
+    "version": "1.2.1",
+    "stable_tag": "1.2.1",
+    "author": "K.Paradorn",
+    "author_profile": "https://www.data-civil.com",
+    "requires": "6.0",
+    "tested": "6.9.4",
+    "requires_php": "7.4",
+    "last_updated": "2026-04-29",
+    "download_url": "https://www.data-civil.com/updates/events-grid.zip",
+    "description": "Dynamic event management and responsive event grid shortcode for Elementor and WordPress.",
+    "sections": {
+        "description": "<p>Events Grid replaces hardcoded HTML event cards with dynamic event posts managed from the WordPress admin area.</p><ul><li>Custom post type for events</li><li>Event Categories taxonomy for filtering</li><li>Meta boxes for dates, venue, booth number, speaker badge, and URL</li><li>Responsive CSS Grid layout</li><li>Shortcode support for Elementor shortcode widget</li><li>Upcoming and past event sections with optional headings</li><li>Output caching for improved performance</li><li>Full REST API support</li><li>Settings page with configurable past-event fade-out period</li></ul>",
+        "changelog": "<h4>1.2.1</h4><ul><li>Fix: Shortcode cache key now includes the current date so past events are correctly excluded from the upcoming section after midnight without requiring a manual content save.</li></ul><h4>1.2.0</h4><ul><li>Security: CSV upload now validates actual file content (not just extension) to catch renamed binaries.</li><li>Security: Added 5 MB file size limit on CSV imports.</li><li>Security: Auto-updater verifies SHA-256 checksum when the update server provides one.</li><li>Security: Added 2,000-row hard cap on CSV imports to prevent memory exhaustion.</li><li>Performance: CSV duplicate detection uses a single pre-loaded hash set instead of one WP_Query per row.</li><li>Performance: CSV bulk import suspends cache invalidation during insert and flushes once at the end.</li><li>Performance: <code>show_past=\"merged\"</code> now uses a single database query instead of two.</li><li>New: \"Load Roboto from Google Fonts\" toggle added under Events &gt; Settings.</li></ul><h4>1.1.2</h4><ul><li>Added Events &gt; Settings page with a \"Hide past events after N days\" option (0 = show all past events).</li></ul><h4>1.1.1</h4><ul><li>Added Modified By column to the Events admin list table showing which user last edited each event.</li></ul><h4>1.1.0</h4><ul><li>Added Event Categories taxonomy — filter events by category in the shortcode using <code>category</code> attribute.</li><li>Added <code>upcoming_label</code> and <code>past_label</code> shortcode attributes for section headings.</li><li>Fixed N+1 database query — all event meta now loaded in a single query per grid.</li><li>Added shortcode output caching (1-hour transient, auto-invalidated on save/delete).</li><li>Added Start Date, End Date, Venue, and Country columns to the Events admin list table.</li><li>Registered all meta fields with the REST API.</li><li>Moved Google Fonts from CSS @import to WordPress asset pipeline.</li><li>Removed CSS !important declarations in favour of scoped selectors.</li></ul><h4>1.0.0</h4><ul><li>Initial release.</li></ul>"
+    },
+    "banners": {}
+}

@@ -1,10 +1,10 @@
 === Events Grid ===
-Contributors: openai
+Contributors: OpenAI
 Tags: events, elementor, shortcode, grid
 Requires at least: 6.0
-Tested up to: 6.5
+Tested up to: 6.9.4
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,35 @@ Examples:
 - `[events_grid posts_per_page="6" show_past="yes"]`
 
 == Changelog ==
+
+= 1.2.1 =
+* Fix: Shortcode cache key now includes the current date so past events are correctly excluded from the upcoming section after midnight without requiring a manual content save.
+
+= 1.2.0 =
+* Security: CSV upload now validates actual file content (finfo/mime_content_type), not just the file extension.
+* Security: Added 5 MB file size limit on CSV imports.
+* Security: Auto-updater now verifies SHA-256 checksum when the update server provides one.
+* Security: Added 2,000-row hard cap on CSV imports to prevent memory exhaustion.
+* Performance: CSV duplicate detection replaced with a single pre-loaded hash set (was one WP_Query per row).
+* Performance: CSV bulk import suspends cache invalidation during insert and flushes once at the end.
+* Performance: `show_past="merged"` shortcode now uses a single database query instead of two.
+* New: Added "Load Roboto from Google Fonts" toggle under Events > Settings to disable the external font request.
+
+= 1.1.2 =
+* Added Events > Settings page with a "Hide past events after N days" option (0 = show all past events, existing default).
+
+= 1.1.1 =
+* Added Modified By column to the Events admin list table showing which user last edited each event.
+
+= 1.1.0 =
+* Added Event Categories taxonomy with shortcode `category` attribute for filtering.
+* Added `upcoming_label` and `past_label` shortcode attributes for section headings.
+* Fixed N+1 database query — all event meta loaded in a single query per grid.
+* Added shortcode output caching (1-hour transient, auto-invalidated on content change).
+* Added Start Date, End Date, Venue, and Country columns to the Events admin list table.
+* Registered all meta fields with the REST API.
+* Moved Google Fonts from CSS @import to WordPress asset pipeline.
+* Removed CSS !important declarations in favour of scoped selectors.
 
 = 1.0.0 =
 * Initial release.
