@@ -3,7 +3,7 @@
  * Plugin Name: Events Grid
  * Plugin URI:  https://www.data-civil.com/calendar/
  * Description: Dynamic event management and responsive event grid shortcode for Elementor and WordPress.
- * Version:     1.2.1
+ * Version:     1.2.3
  * Author:      K.Paradorn
  * Author URI:  https://www.data-civil.com
  * License:     GPL-2.0-or-later
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'EVENTS_GRID_VERSION', '1.2.1' );
+define( 'EVENTS_GRID_VERSION', '1.2.3' );
 define( 'EVENTS_GRID_FILE', __FILE__ );
 define( 'EVENTS_GRID_PATH', plugin_dir_path( __FILE__ ) );
 define( 'EVENTS_GRID_URL', plugin_dir_url( __FILE__ ) );

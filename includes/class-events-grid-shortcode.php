@@ -64,7 +64,7 @@ class Events_Grid_Shortcode {
 
 		if ( false !== $cached ) {
 			wp_enqueue_style( 'events-grid' );
-			return (string) $cached;
+			return self::maybe_inline_stylesheet() . (string) $cached;
 		}
 
 		wp_enqueue_style( 'events-grid' );
@@ -168,7 +168,26 @@ class Events_Grid_Shortcode {
 		// Store in transient for 1 hour.
 		set_transient( $cache_key, $output, HOUR_IN_SECONDS );
 
-		return $output;
+		return self::maybe_inline_stylesheet() . $output;
+	}
+
+	/**
+	 * Return an inline <link> tag for the plugin stylesheet when wp_head has
+	 * already fired and the style has not been output yet.
+	 *
+	 * Covers AJAX / deferred-rendering contexts (e.g. NitroPack lazy-load)
+	 * where wp_enqueue_style() alone cannot add the tag to <head>.
+	 *
+	 * @return string <link> tag, or empty string when not needed.
+	 */
+	private static function maybe_inline_stylesheet() {
+		if ( ! did_action( 'wp_head' ) ) {
+			return '';
+		}
+		if ( wp_style_is( 'events-grid', 'done' ) ) {
+			return '';
+		}
+		return '<link rel="stylesheet" href="' . esc_url( EVENTS_GRID_URL . 'assets/css/events-grid.css' ) . '?ver=' . EVENTS_GRID_VERSION . '" />' . "\n";
 	}
 
 	/**

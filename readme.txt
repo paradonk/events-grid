@@ -4,7 +4,7 @@ Tags: events, elementor, shortcode, grid
 Requires at least: 6.0
 Tested up to: 6.9.4
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.2.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,13 @@ Examples:
 - `[events_grid posts_per_page="6" show_past="yes"]`
 
 == Changelog ==
+
+= 1.2.3 =
+* Fix: Reverted stylesheet registration to wp_register_style() so the CSS is only enqueued when the shortcode renders, preventing a critical error on sites where the previous wp_enqueue_style() change conflicted with the page load order.
+* Fix: Shortcode now injects an inline <link> stylesheet tag when wp_head has already fired and the CSS has not been output, covering AJAX / deferred-render contexts (e.g. NitroPack lazy-load).
+
+= 1.2.2 =
+* Fix: Shortcode cache key now includes the current date so past events are correctly excluded from the upcoming section after midnight without requiring a manual content save.
 
 = 1.2.1 =
 * Fix: Shortcode cache key now includes the current date so past events are correctly excluded from the upcoming section after midnight without requiring a manual content save.
