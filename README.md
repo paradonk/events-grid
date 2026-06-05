@@ -2,7 +2,7 @@
 
 A WordPress plugin that replaces hardcoded HTML event cards with dynamic event posts managed from the admin area. Outputs a responsive CSS Grid via a shortcode — works anywhere, including Elementor's shortcode widget.
 
-**Version:** 1.2.3 | **Requires:** WordPress 6.0+, PHP 7.4+ | **License:** GPLv2
+**Version:** 1.2.4 | **Requires:** WordPress 6.0+, PHP 7.4+ | **License:** GPLv2
 
 ---
 
@@ -125,6 +125,9 @@ events-grid/
 ---
 
 ## Changelog
+
+### 1.2.4
+- Fix: `bust_cache()` now calls `nitropack_sdk_purge_all()` when NitroPack is active, clearing NitroPack's device-specific full-page cache (desktop/tablet/mobile) whenever an event is saved or deleted.
 
 ### 1.2.3
 - Fix: Reverted stylesheet registration to `wp_register_style()` so CSS is only enqueued when the shortcode renders.

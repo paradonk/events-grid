@@ -461,15 +461,22 @@ class Events_Grid_Shortcode {
 	}
 
 	/**
-	 * Invalidate all shortcode output caches by bumping the cache version.
+	 * Invalidate all shortcode output caches by bumping the cache version,
+	 * then purge NitroPack's full-page HTML cache so desktop visitors do not
+	 * receive stale output from NitroPack's device-specific cache pool.
 	 *
-	 * Called on save_post_event and event deletion so visitors never see
-	 * stale output after content changes.
+	 * NitroPack only auto-purges the saved post's own URL and CPT archive —
+	 * it does not know that a regular page embedding [events_grid] also needs
+	 * to be cleared.  Calling nitropack_sdk_purge_all() here covers that gap.
 	 *
 	 * @return void
 	 */
 	public static function bust_cache() {
 		update_option( 'deg_cache_version', time() );
+
+		if ( function_exists( 'nitropack_sdk_purge_all' ) ) {
+			nitropack_sdk_purge_all();
+		}
 	}
 
 	/**
